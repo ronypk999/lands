@@ -1,10 +1,16 @@
 import { BsEmojiGrin } from "react-icons/bs";
-import AuthHook from "../hook/AuthHook";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import { useContext, useState } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import LoginProvider from "../components/loginProvider.jsx/LoginProvider";
 const SignUp = () => {
-  const { emailSignUp } = AuthHook();
+  const { emailSignUp } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleSignUp = (e) => {
+    setLoading(true);
     e.preventDefault();
 
     const email = e.target.email.value;
@@ -12,18 +18,31 @@ const SignUp = () => {
 
     if (password.length < 8) {
       toast.error("Password should be at least 8 characters.");
+      setLoading(false);
       return;
     }
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+$/.test(password)) {
-      toast.error(
-        "Password must contain at least 1 Uppercase, 1 lowercase and 1 number character."
-      );
+    if (!/.*[0-9].*/.test(password)) {
+      toast.error("Password must contain at least 1 number.");
+      setLoading(false);
+      return;
+    }
+    if (!/.*[A-Z].*/.test(password)) {
+      toast.error("Password must contain at least 1 Uppercase letter.");
+      setLoading(false);
+      return;
+    }
+    if (!/.*[a-z].*/.test(password)) {
+      toast.error("Password must contain at least 1 Lowercase letter.");
+      setLoading(false);
       return;
     }
 
     emailSignUp(email, password)
       .then(() => {
         e.target.reset();
+        setLoading(false);
+
+        navigate("/", { state: "signup" });
       })
       .catch((error) => {
         if (error.code === "auth/weak-password") {
@@ -34,6 +53,7 @@ const SignUp = () => {
           toast.error(error.message);
           console.error(error);
         }
+        setLoading(false);
       });
   };
 
@@ -75,9 +95,17 @@ const SignUp = () => {
               </div>
               <div className="form-control mt-6">
                 <button type="submit" className="btn btn-primary">
-                  Sign Up
+                  {loading ? (
+                    <>
+                      Please wait
+                      <span className="loading loading-spinner loading-xs"></span>
+                    </>
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </div>
+              <LoginProvider></LoginProvider>
             </form>
           </div>
         </div>

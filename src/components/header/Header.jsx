@@ -2,9 +2,11 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { WiDaySunny } from "react-icons/wi";
 import { MdNightsStay } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Header = () => {
+  const { user, logout } = useContext(AuthContext);
   const [theme, setTheme] = useState(
     JSON.parse(localStorage.getItem("theme")) || false
   );
@@ -70,22 +72,33 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1">{navlink}</ul>
         </div>
         <div className="navbar-end mr-3 gap-3">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            {/* <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
-            </div> */}
-          </div>
-          <Link to="/login" className="flex items-center gap-2">
-            <FaRegUserCircle className="text-2xl"></FaRegUserCircle>
-            <span>Login</span>
-          </Link>
+          {user ? (
+            <>
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
+              </div>
+              <button onClick={logout} className="flex items-center gap-2">
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="flex items-center gap-2">
+                <FaRegUserCircle className="text-2xl"></FaRegUserCircle>
+                <span>Login</span>
+              </Link>
+            </>
+          )}
+
           <div onClick={handleThemeChange} className="text-xl">
             {theme ? <WiDaySunny></WiDaySunny> : <MdNightsStay></MdNightsStay>}
           </div>
