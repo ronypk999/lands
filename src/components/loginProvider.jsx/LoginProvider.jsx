@@ -2,9 +2,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
+import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 
 const LoginProvider = () => {
-  const { googleAuth, githubAuth } = useContext(AuthContext);
+  const { providerLogin } = useContext(AuthContext);
+  const googleProvider = new GoogleAuthProvider();
+  const githubProvider = new GithubAuthProvider();
 
   return (
     <>
@@ -12,7 +15,7 @@ const LoginProvider = () => {
         <button
           className="btn w-full sm:w-fit btn-ghost border-2 border-primary"
           onClick={() => {
-            googleAuth("login");
+            providerLogin("login", googleProvider);
           }}
           type="button"
         >
@@ -21,7 +24,7 @@ const LoginProvider = () => {
         <button
           className="btn  w-full sm:w-fit btn-ghost border-2 border-primary"
           onClick={() => {
-            githubAuth("login");
+            providerLogin("login", githubProvider);
           }}
           type="button"
         >

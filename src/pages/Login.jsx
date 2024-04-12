@@ -2,12 +2,13 @@ import { useContext, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 import { AuthContext } from "../provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoginProvider from "../components/loginProvider.jsx/LoginProvider";
 import PopupProvider from "../components/popupProvider/PopupProvider";
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const { emailSignIn, token } = useContext(AuthContext);
+  const { emailSignIn } = useContext(AuthContext);
+  const locate = useLocation();
 
   const navigate = useNavigate();
   const handleLogin = (e) => {
@@ -18,8 +19,11 @@ const Login = () => {
     emailSignIn(email, password)
       .then(() => {
         setLoading(false);
-
-        navigate("/", { state: "login" });
+        if (locate.state !== null) {
+          navigate(locate.state, { state: "login" });
+        } else {
+          navigate("/", { state: "login" });
+        }
       })
       .catch((error) => {
         if (error.code === "auth/invalid-credential") {
@@ -32,6 +36,7 @@ const Login = () => {
         setLoading(false);
       });
   };
+
   return (
     <>
       <ToastContainer></ToastContainer>

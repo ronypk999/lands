@@ -1,34 +1,22 @@
-import { toast, ToastContainer } from "react-toastify";
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import Slider from "../components/home/Slider";
 import Estate from "../components/estate/Estate";
+import NotifyLogin from "../notify/NotifyLogin";
+
 const Home = () => {
-  const locate = useLocation();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (locate && locate.state === "login") {
-      toast.success("Login successfull.");
-      navigate({ state: null });
-    }
-    if (locate && locate.state === "signup") {
-      toast.success("Sign Up successfull.");
-      navigate({ state: null });
-    }
-    if (locate && locate.state === "logout") {
-      toast.success("Logout successfull.");
-      navigate({ state: null });
-    }
-    if (locate && locate.state === "link") {
-      toast.success("Account linked! successfull.");
-      navigate({ state: null });
-    }
-  }, [locate]);
+  const data = useLoaderData();
+
   return (
     <>
-      <ToastContainer></ToastContainer>
+      <NotifyLogin></NotifyLogin>
       <Slider></Slider>
-      <Estate></Estate>
+      <div className="px-3 md:px-6 lg:px-12">
+        <div className="flex justify-around gap-12 flex-wrap">
+          {data.map((data) => {
+            return <Estate key={data.id} data={data}></Estate>;
+          })}
+        </div>
+      </div>
     </>
   );
 };

@@ -5,6 +5,8 @@ import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import AuthProvider from "../provider/AuthProvider";
 import ProtectedRouter from "./ProtectedRouter";
+import Property from "../pages/Property";
+import PrivateRouter from "./PrivateRouter";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+        loader: () => fetch("/data/data.json"),
       },
       {
         path: "/login",
@@ -34,6 +37,15 @@ const router = createBrowserRouter([
             <SignUp></SignUp>
           </ProtectedRouter>
         ),
+      },
+      {
+        path: "/property/:propertyName/:id",
+        element: (
+          <PrivateRouter>
+            <Property></Property>
+          </PrivateRouter>
+        ),
+        loader: () => fetch("/data/data.json"),
       },
     ],
   },

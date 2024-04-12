@@ -3,9 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
   signInWithPopup,
-  GithubAuthProvider,
   linkWithCredential,
   OAuthProvider,
 } from "firebase/auth";
@@ -19,10 +17,11 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
-  const googleProvider = new GoogleAuthProvider();
-  const githubProvider = new GithubAuthProvider();
+
   const [user, SetUser] = useState(null);
+  const [loginType, setLoginType] = useState(null);
   const [token, setToken] = useState(null);
+
   const emailSignUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -30,49 +29,20 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const googleAuth = (type) => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        if (type === "link") {
-          const credential = OAuthProvider.credentialFromError(token);
-
-          linkWithCredential(result.user, credential)
-            .then(() => {
-              navigate("/", { state: type });
-            })
-            .catch((error) => {
-              console.log(error);
-              toast.error("Account linking failed. try again later");
-            });
-        } else {
-          navigate("/", { state: type });
-        }
-      })
-      .catch((error) => {
-        if (error.code === "auth/account-exists-with-different-credential") {
-          setToken(error);
-        } else {
-          toast.error(
-            "Google is not available at this moment. try again later"
-          );
-        }
-      });
-  };
-
-  const githubAuth = (type) => {
-    signInWithPopup(auth, githubProvider)
+  const providerLogin = (type, provider) => {
+    signInWithPopup(auth, provider)
       .then((result) => {
         if (type === "link") {
           const credential = OAuthProvider.credentialFromError(token);
           linkWithCredential(result.user, credential)
             .then(() => {
-              navigate("/", { state: type });
+              setLoginType(type);
             })
             .catch(() => {
               toast.error("Account linking failed. try again later");
             });
         } else {
-          navigate("/", { state: type });
+          setLoginType(type);
         }
       })
       .catch((error) => {
@@ -101,10 +71,10 @@ const AuthProvider = ({ children }) => {
     return () => unsunscribe();
   }, []);
   const values = {
-    googleAuth,
-    githubAuth,
+    providerLogin,
     emailSignUp,
     emailSignIn,
+    loginType,
     token,
     setToken,
     logout,

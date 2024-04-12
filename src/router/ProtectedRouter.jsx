@@ -1,16 +1,22 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProtectedRouter = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loginType } = useContext(AuthContext);
   const navigate = useNavigate();
+  const locate = useLocation();
 
-  if (user) {
-    navigate("/");
-  } else {
-    return children;
-  }
+  useEffect(() => {
+    if (user) {
+      if (locate.state !== null) {
+        navigate(locate.state, { state: loginType });
+      } else {
+        navigate("/", { state: loginType });
+      }
+    }
+  }, [user, navigate, locate, loginType]);
+  return children;
 };
 
 export default ProtectedRouter;

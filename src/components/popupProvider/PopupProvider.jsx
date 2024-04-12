@@ -4,7 +4,7 @@ import PopupLinkAccount from "./PopupLinkAccount";
 
 export default function PopupProvider() {
   const { token, setToken } = useContext(AuthContext);
-  console.log(token);
+
   return (
     <div className="mx-auto w-fit">
       <div
