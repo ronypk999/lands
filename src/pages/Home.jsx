@@ -1,6 +1,8 @@
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Slider from "../components/home/Slider";
+import Estate from "../components/estate/Estate";
 const Home = () => {
   const locate = useLocation();
   const navigate = useNavigate();
@@ -25,6 +27,8 @@ const Home = () => {
   return (
     <>
       <ToastContainer></ToastContainer>
+      <Slider></Slider>
+      <Estate></Estate>
     </>
   );
 };
