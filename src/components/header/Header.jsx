@@ -1,12 +1,12 @@
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { WiDaySunny } from "react-icons/wi";
 import { MdNightsStay } from "react-icons/md";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../provider/AuthProvider";
 
 const Header = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, load, logout } = useContext(AuthContext);
   const [theme, setTheme] = useState(
     JSON.parse(localStorage.getItem("theme")) || false
   );
@@ -28,14 +28,25 @@ const Header = () => {
   const navlink = (
     <>
       <li>
-        <a>Item 1</a>
+        <NavLink to="/">Home</NavLink>
       </li>
-      <li>
-        <a>Parent</a>
-      </li>
-      <li>
-        <a>Item 3</a>
-      </li>
+      {load ? (
+        <div className="pl-6 flex flex-col md:flex-row gap-6 items-center">
+          <div className="skeleton h-4 w-24"></div>
+          <div className="skeleton h-4 w-24"></div>
+        </div>
+      ) : (
+        user && (
+          <>
+            <li>
+              <NavLink to="/profile">Update Profile</NavLink>
+            </li>
+            <li>
+              <NavLink to="/ads">Create Ads</NavLink>
+            </li>
+          </>
+        )
+      )}
     </>
   );
   return (
@@ -72,18 +83,36 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1">{navlink}</ul>
         </div>
         <div className="navbar-end mr-3 gap-3">
-          {user ? (
+          {load ? (
+            <div className="flex flex-col gap-4 ">
+              <div className="flex gap-4 items-center">
+                <div className="skeleton w-12 h-12 rounded-full shrink-0"></div>
+                <div className="flex flex-col gap-4">
+                  <div className="skeleton h-4 w-12"></div>
+                </div>
+              </div>
+            </div>
+          ) : user ? (
             <>
               <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="tooltip tooltip- tooltip-bottom z-50 tooltip-info"
+                data-tip={user?.displayName ? user.displayName : "login please"}
               >
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar"
+                >
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="User"
+                      src={
+                        user?.photoURL
+                          ? user.photoURL
+                          : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                      }
+                    />
+                  </div>
                 </div>
               </div>
               <button onClick={logout} className="flex items-center gap-2">

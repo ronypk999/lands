@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [user, SetUser] = useState(null);
+  const [load, setLoad] = useState(true);
   const [loginType, setLoginType] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -59,6 +60,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     return signOut(auth)
       .then(() => {
+        localStorage.removeItem("logged");
         navigate("/", { state: "logout" });
       })
       .catch();
@@ -67,6 +69,8 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsunscribe = onAuthStateChanged(auth, (user) => {
       SetUser(user);
+      setLoad(false);
+      localStorage.setItem("logged", "yes");
     });
     return () => unsunscribe();
   }, []);
@@ -75,6 +79,7 @@ const AuthProvider = ({ children }) => {
     emailSignUp,
     emailSignIn,
     loginType,
+    load,
     token,
     setToken,
     logout,

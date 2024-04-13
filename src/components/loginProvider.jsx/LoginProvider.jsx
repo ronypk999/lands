@@ -11,24 +11,24 @@ const LoginProvider = () => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex pt-6 flex-col gap-3">
         <button
-          className="btn w-full sm:w-fit btn-ghost border-2 border-primary"
+          className="btn w-full  btn-ghost border-2 border-primary"
           onClick={() => {
             providerLogin("login", googleProvider);
           }}
           type="button"
         >
-          <FaGoogle></FaGoogle> with Google
+          <FaGoogle></FaGoogle>Continue with Google
         </button>
         <button
-          className="btn  w-full sm:w-fit btn-ghost border-2 border-primary"
+          className="btn  w-full  btn-ghost border-2 border-primary"
           onClick={() => {
             providerLogin("login", githubProvider);
           }}
           type="button"
         >
-          <FaGithub></FaGithub> with Github
+          <FaGithub></FaGithub> Continue with Github
         </button>
       </div>
     </>

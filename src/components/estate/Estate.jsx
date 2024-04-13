@@ -6,7 +6,12 @@ const Estate = ({ data }) => {
   const { id, estate_title, image, location, area, status, price } = data;
   return (
     <>
-      <div className="card w-96 bg-base-100 shadow-xl">
+      <div
+        data-aos="fade-up"
+        data-aos-delay={data.id * 200}
+        data-aos-duration="1000"
+        className="card w-96 bg-base-100 shadow-xl"
+      >
         <figure>
           <img src={image} alt="Shoes" />
         </figure>

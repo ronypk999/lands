@@ -8,7 +8,7 @@ const ProtectedRouter = ({ children }) => {
   const locate = useLocation();
 
   useEffect(() => {
-    if (user) {
+    if (user && localStorage.getItem("logged")) {
       if (locate.state !== null) {
         navigate(locate.state, { state: loginType });
       } else {

@@ -8,7 +8,7 @@ const PrivateRouter = ({ children }) => {
   const locate = useLocation();
 
   useEffect(() => {
-    if (user === null) {
+    if (user === null && !localStorage.getItem("logged")) {
       navigate("/login", { state: locate.pathname });
     }
   }, [user, locate, navigate, children]);

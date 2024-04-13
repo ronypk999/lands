@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 import { AuthContext } from "../provider/AuthProvider";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoginProvider from "../components/loginProvider.jsx/LoginProvider";
 import PopupProvider from "../components/popupProvider/PopupProvider";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [eye, setEye] = useState(false);
   const { emailSignIn } = useContext(AuthContext);
   const locate = useLocation();
 
@@ -59,22 +61,27 @@ const Login = () => {
                   required
                 />
               </div>
-              <div className="form-control">
+              <div className="form-control relative">
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
                 <input
-                  type="password"
+                  type={eye ? "text" : "password"}
                   name="password"
                   placeholder="password"
                   className="input input-bordered"
                   required
                 />
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
-                    Forgot password?
-                  </a>
-                </label>
+                <div
+                  onClick={() => setEye(!eye)}
+                  className="absolute top-[60%] right-2"
+                >
+                  {eye ? (
+                    <IoMdEye className="text-xl"></IoMdEye>
+                  ) : (
+                    <IoMdEyeOff className="text-xl"></IoMdEyeOff>
+                  )}
+                </div>
               </div>
               <div className="form-control mt-6">
                 <button type="submit" className="btn btn-primary">
@@ -88,8 +95,19 @@ const Login = () => {
                   )}
                 </button>
               </div>
+
               <LoginProvider></LoginProvider>
               <PopupProvider></PopupProvider>
+
+              <div className="form-control pt-6">
+                <span className="label-text">
+                  Don&apos;t have an account?
+                  <Link to="/signup" className="link hover:text-red-500">
+                    {" "}
+                    Click here to Sign Up
+                  </Link>
+                </span>
+              </div>
             </form>
           </div>
         </div>

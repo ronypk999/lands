@@ -7,6 +7,9 @@ import AuthProvider from "../provider/AuthProvider";
 import ProtectedRouter from "./ProtectedRouter";
 import Property from "../pages/Property";
 import PrivateRouter from "./PrivateRouter";
+import Error from "../pages/Error";
+import UpdateProfile from "../pages/UpdateProfile";
+import SubmitAds from "../pages/SubmitAds";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,7 @@ const router = createBrowserRouter([
         <Layout></Layout>
       </AuthProvider>
     ),
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",
@@ -46,6 +50,22 @@ const router = createBrowserRouter([
           </PrivateRouter>
         ),
         loader: () => fetch("/data/data.json"),
+      },
+      {
+        path: "/profile",
+        element: (
+          <PrivateRouter>
+            <UpdateProfile></UpdateProfile>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "/ads",
+        element: (
+          <PrivateRouter>
+            <SubmitAds></SubmitAds>
+          </PrivateRouter>
+        ),
       },
     ],
   },
