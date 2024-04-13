@@ -19,7 +19,7 @@
     "segment_name": "Mountain",
     "description": "Scenic mountain land surrounded by nature trails and stunning views, perfect for a mountain getaway.",
     "price": "$800,000",
-    "status": "sale",
+    "status": "rent",
     "area": "5 acres",
     "location": "Aspen, Colorado",
     "facilities": ["Hiking Trails", "Mountain Views"],
