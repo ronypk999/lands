@@ -1,6 +1,6 @@
 # REAL ESTATE - BD LANDS
 
-The real-estate website was built using.
+The real-estate website was built using react with many npm packages. some of them are
 
 - [React-hook-from](https://react-hook-form.com/) for forms data validation
 - [Swiper Slider](https://swiperjs.com/) for sldiers
