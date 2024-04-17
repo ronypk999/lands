@@ -68,9 +68,13 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsunscribe = onAuthStateChanged(auth, (user) => {
-      SetUser(user);
-      setLoad(false);
-      localStorage.setItem("logged", "yes");
+      if (user) {
+        SetUser(user);
+        setLoad(false);
+        localStorage.setItem("logged", "yes");
+      } else {
+        setLoad(false);
+      }
     });
     return () => unsunscribe();
   }, []);
